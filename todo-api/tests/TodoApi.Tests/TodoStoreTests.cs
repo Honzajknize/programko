@@ -5,13 +5,13 @@ namespace TodoApi.Tests;
 /// </summary>
 public class TodoStoreTests
 {
-    private readonly TodoStore _store = new();
+    private readonly TodoStore _store = new(); 
 
     [Fact]
     public void Add_AssignsIncrementingIds()
     {
         var first = _store.Add("První");
-        var second = _store.Add("Druhý");
+        var second = _store.Add("Druhý");  
 
         Assert.Equal(1, first.Id);
         Assert.Equal(2, second.Id);
