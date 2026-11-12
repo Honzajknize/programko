@@ -1,5 +1,5 @@
 **Ukázka:**
-```yaml
+
 name: CI
 
 on:
@@ -29,16 +29,5 @@ jobs:
 
       - name: Test
         run: dotnet test --no-build -c Release --verbosity normal
-```
 
-**Oprava testu:**
-```csharp
-[Fact]
-public async Task Post_ValidTodo_ReturnsCreated()
-{
-    var response = await _client.PostAsJsonAsync("/api/todos", new { title = "Napsat CI" });
 
-    Assert.Equal(HttpStatusCode.Created, response.StatusCode);   // bylo: OK
-    Assert.NotNull(response.Headers.Location);
-}
-```
