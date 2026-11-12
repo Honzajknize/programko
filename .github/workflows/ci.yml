@@ -1,54 +1,44 @@
-name:
-CI
+**Ukázka:**
+```yaml
+name: CI
+
 on:
-push:
-branches:
-[
-master
-]
-pull_request:
+  push:
+    branches: [master]
+  pull_request:
+
 permissions:
-contents:
-read
+  contents: read
+
 jobs:
-test:
-runs-on:
-ubuntu-latest
-timeout-minutes:
-10
-steps:
--
-uses:
-actions/checkout@v4
--
-uses:
-actions/setup-dotnet@v4
-with:
-dotnet-version:
-'8.0.x'
--
-name:
-Restore
-run:
-dotnet
-restore
--
-name:
-Build
-run:
-dotnet
-build
---no-restore
--c
-Release
--
-name:
-Test
-run:
-dotnet
-test
---no-build
--c
-Release
---verbosity
-normal
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Test
+        run: dotnet test --no-build -c Release --verbosity normal
+```
+
+**Oprava testu:**
+```csharp
+[Fact]
+public async Task Post_ValidTodo_ReturnsCreated()
+{
+    var response = await _client.PostAsJsonAsync("/api/todos", new { title = "Napsat CI" });
+
+    Assert.Equal(HttpStatusCode.Created, response.StatusCode);   // bylo: OK
+    Assert.NotNull(response.Headers.Location);
+}
+```
